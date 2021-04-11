@@ -4,8 +4,14 @@ const Post = require('../posts/post.entity');
 const mongoose = require('mongoose');
 
 class UserService {
-    create(payload) {
+    async create(payload) {
         const user = new User(payload);
+        const userWithThisId = await User.find({
+            username: payload.username,
+        });
+        if (userWithThisId.length > 0) {
+            return undefined;
+        }
         return user.save();
     }
 
